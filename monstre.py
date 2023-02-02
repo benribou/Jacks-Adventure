@@ -17,6 +17,20 @@ class Monstre(pygame.sprite.Sprite):
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
 
+    def getter_degats(self):
+        return self.degats
+
+    def getter_health(self):
+        return self.health
+
+    def setter_health(self, health):
+        self.health = health
+
+    def getter_maxHealth(self):
+        return self.maxHealth
+
+    def getter_coin(self):
+        return self.coin
     #Chercher les coordonnées du joueur et le suivre
 
     def targetPlayer(self, player):

@@ -1,6 +1,6 @@
 import pygame
 import time
-
+import item
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y, health=100, degats=7, max_health=100, coin=0):
@@ -24,6 +24,54 @@ class Player(pygame.sprite.Sprite):
             'up': self.get_image(0, 96)
 
         }
+
+    def getter_degats(self):
+        return self.degats
+
+    def setter_degats(self, degats):
+        self.degats = degats
+
+    def getter_health(self):
+        return self.health
+
+    def setter_health(self, health):
+        self.health = health
+
+    def getter_niv(self):
+        return self.niv
+
+    def setter_niv(self, niv):
+        self.niv = niv
+
+    def getter_coin(self):
+        return self.coin
+
+    def setter_coin(self, coin):
+        self.coin = coin
+
+    def getter_maxHealth(self):
+        return self.maxHealth
+
+    def setter_maxHealth(self, maxHealth):
+        self.maxHealth = maxHealth
+
+    def getter_EXP(self):
+        return self.EXP
+
+    def setter_EXP(self, EXP):
+        self.EXP = EXP
+        # if self.EXP == 100:
+        #     self.lvlup()
+
+    # def prend_un_coup(self, ennemie):
+    #     self.health - ennemie.getter_degats()
+    def update(self):
+        self.rect.topleft = self.position
+
+    def soin(self, item):
+        self.health += item.getter_soin
+        if self.health > self.maxHealth:
+            self.health = self.maxHealth
 
     def changeAnimation(self, direction):
         if direction == 'up':
