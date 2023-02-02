@@ -3,7 +3,7 @@ import time
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, health=100, degats=7, max_health=100):
+    def __init__(self, x, y, health=100, degats=7, max_health=100, coin=0):
         super().__init__()
         self.sprites_sheet = pygame.image.load('player.png')
         self.image = self.get_image(0, 0)
@@ -11,6 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.position = [x, y]
         self.speed = 2
         self.health = health
+        self.coin = coin
         self.max_health = max_health
         self.degats = degats
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
@@ -18,29 +19,25 @@ class Player(pygame.sprite.Sprite):
         self.images = {
 
             'down': self.get_image(0, 0),
-            'left': [self.get_image(0, 32), self.get_image(32, 32), self.get_image(64, 32)],
+            'left': self.get_image(0, 32),
             'right': self.get_image(0, 64),
-            'up': [self.get_image(0, 96), self.get_image(32, 96), self.get_image(64, 96)]
+            'up': self.get_image(0, 96)
 
         }
 
     def changeAnimation(self, direction):
         if direction == 'up':
-            for image in self.images['up']:
-                self.image = image
-            
+            self.image = self.images['up']
         elif direction == 'down':
             self.image = self.images['down']
         elif direction == 'left':
-            for image in self.images['left']:
-                self.image = image
+            self.image = self.images['left'] 
         elif direction == 'right':
             self.image = self.images['right'] 
     
     def attackMonster(self, monster):
-        if self.feet.colliderect(monster.feet):
-            monster.health -= 50
-            print(monster.health)
+        monster.health -= 50
+        print(monster.health)
 
     def save_location(self): self.old_position = self.position.copy()
 
