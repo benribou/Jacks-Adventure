@@ -1,29 +1,23 @@
 import pygame
 import time
-import item
-class Player(pygame.sprite.Sprite):
+from animation import AnimateSprite
 
-    def __init__(self, x, y, health=100, degats=7, max_health=100, coin=0):
+class Player(AnimateSprite):
+
+    def __init__(self, x, y, health=100, degats=7, max_health=100, coin=0, level=1, exp=0):
         super().__init__()
-        self.sprites_sheet = pygame.image.load('player.png')
         self.image = self.get_image(0, 0)
         self.rect = self.image.get_rect()
         self.position = [x, y]
-        self.speed = 2
         self.health = health
         self.coin = coin
         self.max_health = max_health
         self.degats = degats
+        self.level = level
+        self.exp = exp
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
-        self.images = {
-
-            'down': self.get_image(0, 0),
-            'left': self.get_image(0, 32),
-            'right': self.get_image(0, 64),
-            'up': self.get_image(0, 96)
-
-        }
+        self.timerPreviousAttack = 0
 
     def getter_degats(self):
         return self.degats
@@ -60,32 +54,27 @@ class Player(pygame.sprite.Sprite):
 
     def setter_EXP(self, EXP):
         self.EXP = EXP
-        # if self.EXP == 100:
-        #     self.lvlup()
-
-    # def prend_un_coup(self, ennemie):
-    #     self.health - ennemie.getter_degats()
-    def update(self):
-        self.rect.topleft = self.position
-
-    def soin(self, item):
-        self.health += item.getter_soin
-        if self.health > self.maxHealth:
-            self.health = self.maxHealth
-
-    def changeAnimation(self, direction):
-        if direction == 'up':
-            self.image = self.images['up']
-        elif direction == 'down':
-            self.image = self.images['down']
-        elif direction == 'left':
-            self.image = self.images['left'] 
-        elif direction == 'right':
-            self.image = self.images['right'] 
     
     def attackMonster(self, monster):
-        monster.health -= 50
-        print(monster.health)
+        seconds = time.time()
+        if self.timerPreviousAttack == 0:
+            monster.health -= 20
+            self.timerPreviousAttack = seconds
+        elif(seconds - self.timerPreviousAttack >= 0.75):
+            monster.health -= 20
+            self.timerPreviousAttack = seconds
+            print(monster.health)
+    
+    def xpNeedToUp(self):
+        return 100 + (100 * self.level) * 0.5
+
+    def increaseLevel(self):
+        if(self.exp >= self.xpNeedToUp()):
+            self.exp = 0
+            self.level += 1
+            self.max_health += 20
+            self.health = self.max_health
+            self.degats += 1
 
     def save_location(self): self.old_position = self.position.copy()
 
@@ -107,9 +96,3 @@ class Player(pygame.sprite.Sprite):
             self.position[0] -= self.speed
         elif direction == 'right':
             self.position[0] += self.speed
-
-    def get_image(self, x, y):
-        image = pygame.Surface([32, 32])
-        image.blit(self.sprites_sheet, (0, 0), (x, y, 32, 32))
-        image.set_colorkey((0, 0, 0))
-        return image
