@@ -27,14 +27,14 @@ class Game:
         map_layer = pyscroll.BufferedRenderer(map_data, self.screen.get_size())
         map_layer.zoom = 2
 
-        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=1)
+        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=0)
 
         self.player = Player(350, 350)
-        self.monstre1 = Monstre(350, 300, typeMonstre="gorille")
-        self.monstre2 = Monstre(500, 600, typeMonstre="gorille")
-        self.monstre3 = Monstre(877, 182, typeMonstre="gorille")
-        self.monstre4 = Monstre(823, 741, typeMonstre="gorille")
-        self.monstre5 = Monstre(277, 804, typeMonstre="gorille")
+        self.monstre1 = Monstre(350, 300, typeMonstre="gorille", degats=7, max_health=30)
+        self.monstre2 = Monstre(500, 600, typeMonstre="gorille", degats=7, max_health=30)
+        self.monstre3 = Monstre(877, 182, typeMonstre="grenouille", degats=5, max_health=20)
+        self.monstre4 = Monstre(823, 741, typeMonstre="grenouille", degats=5, max_health=20)
+        self.monstre5 = Monstre(277, 804, typeMonstre="grenouille", degats=5, max_health=20)
         self.group.add(self.player)
         self.group.add(self.monstre1)
         self.group.add(self.monstre2)
@@ -42,8 +42,58 @@ class Game:
         self.group.add(self.monstre4)
         self.group.add(self.monstre5)
 
-        self.monstresList = [self.monstre1, self.monstre2, self.monstre3, self.monstre4, self.monstre5]
-        self.monstresListCheck = [self.monstre1, self.monstre2, self.monstre3, self.monstre4, self.monstre5]
+        self.monstresListCheckjungle = [self.monstre1, self.monstre2, self.monstre3, self.monstre4, self.monstre5]
+
+        # biome glace
+
+        self.monstre6 = Monstre(220, 1149, typeMonstre="cerf", degats=9, max_health=40)
+        self.monstre7 = Monstre(454, 1481, typeMonstre="loup", degats=12, max_health=50)
+        self.monstre8 = Monstre(224, 1713, typeMonstre="loup", degats=12, max_health=50)
+        self.monstre9 = Monstre(865, 1361, typeMonstre="cerf", degats=9, max_health=40)
+        self.monstre10 = Monstre(824, 1080, typeMonstre="cerf", degats=9, max_health=40)
+        self.monstre11 = Monstre(640, 1688, typeMonstre="loup", degats=12, max_health=50)
+        self.group.add(self.monstre6)
+        self.group.add(self.monstre7)
+        self.group.add(self.monstre8)
+        self.group.add(self.monstre9)
+        self.group.add(self.monstre10)
+        self.group.add(self.monstre11)
+
+        self.monstresListCheckglace = [self.monstre6, self.monstre7, self.monstre8, self.monstre9, self.monstre10, self.monstre11]
+
+        # Biome Plage
+
+        self.monstre12 = Monstre(1094, 1575, typeMonstre="crabe", degats=15, max_health=70)
+        self.monstre13 = Monstre(1236, 1339, typeMonstre="tortue", degats=13, max_health=60)
+        self.monstre14 = Monstre(1254, 1091, typeMonstre="crabe", degats=15, max_health=70)
+        self.monstre15 = Monstre(1765, 1065, typeMonstre="crabe", degats=15, max_health=70)
+        self.monstre16 = Monstre(1619, 1506, typeMonstre="tortue", degats=13, max_health=60)
+        self.monstre17 = Monstre(1559, 1752, typeMonstre="tortue", degats=13, max_health=60)
+        self.group.add(self.monstre12)
+        self.group.add(self.monstre13)
+        self.group.add(self.monstre14)
+        self.group.add(self.monstre15)
+        self.group.add(self.monstre16)
+        self.group.add(self.monstre17)
+
+        self.monstresListCheckplage = [self.monstre12, self.monstre13, self.monstre14, self.monstre15, self.monstre16, self.monstre17]
+
+        # biome desert
+
+        self.monstre18 = Monstre(1111, 731, typeMonstre="singe", degats=19, max_health=70)
+        self.monstre19 = Monstre(1179, 469, typeMonstre="pumba", degats=22, max_health=80)
+        self.monstre20 = Monstre(1438, 188, typeMonstre="pumba", degats=22, max_health=80)
+        self.monstre21 = Monstre(1706, 72, typeMonstre="singe", degats=19, max_health=70)
+        self.monstre22 = Monstre(1794, 810, typeMonstre="pumba", degats=22, max_health=80)
+        self.monstre23 = Monstre(1785, 310, typeMonstre="singe", degats=19, max_health=70)
+        self.group.add(self.monstre18)
+        self.group.add(self.monstre19)
+        self.group.add(self.monstre20)
+        self.group.add(self.monstre21)
+        self.group.add(self.monstre22)
+        self.group.add(self.monstre23)
+
+        self.monstresListCheckdesert = [self.monstre18, self.monstre19, self.monstre20, self.monstre21, self.monstre22, self.monstre23]
 
         self.walls = []
 
@@ -132,29 +182,80 @@ class Game:
 
                     if(sprite.health <= 0):
                         
-                        self.monstresListCheck.remove(sprite)
-                        print(self.monstresListCheck)
-                        sprite.remove(self.group)
-                        if(len(self.monstresListCheck) == 0):
+                        self.monstresListCheckjungle.remove(sprite)
+                        if(len(self.monstresListCheckjungle) == 0):
 
-                            self.monstre1 = Monstre(350, 300, typeMonstre="gorille")
-                            self.monstre2 = Monstre(500, 600, typeMonstre="gorille")
-                            self.monstre3 = Monstre(877, 182, typeMonstre="gorille")
-                            self.monstre4 = Monstre(823, 741, typeMonstre="gorille")
-                            self.monstre5 = Monstre(277, 804, typeMonstre="gorille")
+                            self.monstre1 = Monstre(350, 300, typeMonstre="gorille", degats=7, max_health=30)
+                            self.monstre2 = Monstre(500, 600, typeMonstre="gorille", degats=7, max_health=30)
+                            self.monstre3 = Monstre(877, 182, typeMonstre="gorille", degats=7, max_health=30)
+                            self.monstre4 = Monstre(823, 741, typeMonstre="gorille", degats=7, max_health=30)
+                            self.monstre5 = Monstre(277, 804, typeMonstre="gorille", degats=7, max_health=30)
                             self.group.add(self.monstre1)
                             self.group.add(self.monstre2)
                             self.group.add(self.monstre3)
                             self.group.add(self.monstre4)
                             self.group.add(self.monstre5)
-                            self.monstresListCheck = [self.monstre1, self.monstre2, self.monstre3, self.monstre4, self.monstre5]
+                            self.monstresListCheckjungle = [self.monstre1, self.monstre2, self.monstre3, self.monstre4, self.monstre5]
+
+                        self.monstresListCheckglace.remove(sprite)
+                        if len(self.monstresListCheckglace) == 0:
+                            self.monstre6 = Monstre(220, 1149, typeMonstre="cerf", degats=9, max_health=40)
+                            self.monstre7 = Monstre(454, 1481, typeMonstre="loup", degats=12, max_health=50)
+                            self.monstre8 = Monstre(224, 1713, typeMonstre="loup", degats=12, max_health=50)
+                            self.monstre9 = Monstre(865, 1361, typeMonstre="cerf", degats=9, max_health=40)
+                            self.monstre10 = Monstre(824, 1080, typeMonstre="cerf", degats=9, max_health=40)
+                            self.monstre11 = Monstre(640, 1688, typeMonstre="loup", degats=12, max_health=50)
+                            self.group.add(self.monstre6)
+                            self.group.add(self.monstre7)
+                            self.group.add(self.monstre8)
+                            self.group.add(self.monstre9)
+                            self.group.add(self.monstre10)
+                            self.group.add(self.monstre11)
+
+                            self.monstresListCheckglace = [self.monstre6, self.monstre7, self.monstre8, self.monstre9, self.monstre10, self.monstre11]
+
+                        self.monstresListCheckplage.remove(sprite)
+                        if len(self.monstresListCheckplage) == 0:
+                            self.monstre12 = Monstre(1094, 1575, typeMonstre="crabe", degats=15, max_health=70)
+                            self.monstre13 = Monstre(1236, 1339, typeMonstre="tortue", degats=13, max_health=60)
+                            self.monstre14 = Monstre(1254, 1091, typeMonstre="crabe", degats=15, max_health=70)
+                            self.monstre15 = Monstre(1765, 1065, typeMonstre="crabe", degats=15, max_health=70)
+                            self.monstre16 = Monstre(1619, 1506, typeMonstre="tortue", degats=13, max_health=60)
+                            self.monstre17 = Monstre(1559, 1752, typeMonstre="tortue", degats=13, max_health=60)
+                            self.group.add(self.monstre12)
+                            self.group.add(self.monstre13)
+                            self.group.add(self.monstre14)
+                            self.group.add(self.monstre15)
+                            self.group.add(self.monstre16)
+                            self.group.add(self.monstre17)
+
+                            self.monstresListCheckplage = [self.monstre12, self.monstre13, self.monstre14, self.monstre15, self.monstre16, self.monstre17]
+
+                        self.monstresListCheckdesert.remove(sprite)
+                        if len(self.monstresListCheckdesert) == 0:
+                            self.monstre18 = Monstre(1111, 731, typeMonstre="singe", degats=19, max_health=70)
+                            self.monstre19 = Monstre(1179, 469, typeMonstre="pumba", degats=22, max_health=80)
+                            self.monstre20 = Monstre(1438, 188, typeMonstre="pumba", degats=22, max_health=80)
+                            self.monstre21 = Monstre(1706, 72, typeMonstre="singe", degats=19, max_health=70)
+                            self.monstre22 = Monstre(1794, 810, typeMonstre="pumba", degats=22, max_health=80)
+                            self.monstre23 = Monstre(1785, 310, typeMonstre="singe", degats=19, max_health=70)
+                            self.group.add(self.monstre18)
+                            self.group.add(self.monstre19)
+                            self.group.add(self.monstre20)
+                            self.group.add(self.monstre21)
+                            self.group.add(self.monstre22)
+                            self.group.add(self.monstre23)
+
+                            self.monstresListCheckdesert = [self.monstre18, self.monstre19, self.monstre20, self.monstre21, self.monstre22, self.monstre23]
 
                         self.player.coin += sprite.returnRewardCoin()
                         self.player.exp += sprite.returnRewardXp()
                         self.player.increaseLevel()
                         self.coffre1 = Chest(500, 500)
+
                         if(self.player.health + 30 <= self.player.max_health):
                             self.player.health += 30
+
                         self.group.add(self.coffre1)
                         self.update()
 

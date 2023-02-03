@@ -4,7 +4,7 @@ from animation import AnimateSprite
 
 class Player(AnimateSprite):
 
-    def __init__(self, x, y, health=100, degats=7, max_health=100, coin=0, level=1, exp=0):
+    def __init__(self, x, y, health=100, degats=10, max_health=100, coin=0, level=1, exp=0):
         super().__init__()
         self.image = self.get_image(0, 0)
         self.rect = self.image.get_rect()
@@ -58,10 +58,10 @@ class Player(AnimateSprite):
     def attackMonster(self, monster):
         seconds = time.time()
         if self.timerPreviousAttack == 0:
-            monster.health -= 20
+            monster.health -= self.getter_degats()
             self.timerPreviousAttack = seconds
         elif(seconds - self.timerPreviousAttack >= 0.75):
-            monster.health -= 20
+            monster.health -= self.getter_degats()
             self.timerPreviousAttack = seconds
             print(monster.health)
     
