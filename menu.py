@@ -32,13 +32,7 @@ class Menu:
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=1)
 
         self.player = Player(350, 350)
-        self.monstre1 = Monstre(350, 300, typeMonstre="zombie")
-        self.monstre2 = Monstre(500, 600, typeMonstre="boss")
         self.group.add(self.player)
-        self.group.add(self.monstre1)
-        self.group.add(self.monstre2)
-
-        print(self.monstre1.health)
 
         self.walls = []
     def run(self):
